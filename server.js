@@ -21,7 +21,7 @@ app.post('/api/tickets', (req, res) =>{
         return res.status(400).json ({ error: 'Descripcion y prioridad son requeridos'});
     }
 
-    const stmt = db.prepare(`INSERT INTO tickets (descricion, prioridad) VALUES (?,?)`);
+    const stmt = db.prepare(`INSERT INTO tickets (descripcion, prioridad) VALUES (?,?)`);
 
     const resultado = stmt.run(descripcion, prioridad);
 
