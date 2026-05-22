@@ -13,14 +13,14 @@ const createTableQuery = `
 CREATE TABLE IF NOT EXISTS tickets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     descripcion TEXT NOT NULL,
-    priotidad TEXT NOT NULL,
+    prioridad TEXT NOT NULL,
     estado TEXT DEFAULT 'Abierto',
-    fecha_creacion DATETIME DEFAULT CURRENT_tIMESTAMP
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 `;
 
 //Ejecuta la orden en la base de datos para crear la tabla
-db.exec(crearTableQuery);
+db.exec(createTableQuery);
 console.log ('Tabla "tickets" creada o verificada con exito.');
 
 // Exporta la conexión a la base de datos para su uso en otros módulos
