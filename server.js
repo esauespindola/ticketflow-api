@@ -28,6 +28,11 @@ app.post('/api/tickets', (req, res) =>{
     res.status(201).json({ message: 'Ticket creado exitosamente', ticketId: resultado.lastInsertRowid});
 })
 
+app.get('/api/tickets', (req, res) => {
+    const tickets = db.prepare('SELECT * FROM tickets').all();
+    res.json(tickets);
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo impecable en el puerto ${PORT}`);
 });
