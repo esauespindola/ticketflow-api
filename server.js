@@ -33,6 +33,48 @@ app.get('/api/tickets', (req, res) => {
     res.json(tickets);
 });
 
+// Ver un ticket por ID
+app.get('/api/tickets/:id', (req, res) => {
+    const ticket = db.prepare('SELECT * FROM tickets WHERE id = ?').get(req.params.id);
+
+    if (!ticket) {
+        return res.status(404).json({ error: 'Ticket no encontrado' });
+    }
+
+    res.json(ticket);
+});
+
+// Actualizar un ticket
+app.put('/api/tickets/:id', (req, res) => {
+    const { descripcion, prioridad, estado } = req.body;
+    const { id } = req.params;
+
+    const ticket = db.prepare('SELECT * FROM tickets WHERE id = ?').get(id);
+    if (!ticket) {
+        return res.status(404).json({ error: 'Ticket no encontrado' });
+    }
+
+    db.prepare(`
+        UPDATE tickets SET descripcion = ?, prioridad = ?, estado = ? WHERE id = ?
+    `).run(descripcion, prioridad, estado, id);
+
+    res.json({ message: 'Ticket actualizado exitosamente' });
+});
+
+// Eliminar un ticket
+app.delete('/api/tickets/:id', (req, res) => {
+    const { id } = req.params;
+
+    const ticket = db.prepare('SELECT * FROM tickets WHERE id = ?').get(id);
+    if (!ticket) {
+        return res.status(404).json({ error: 'Ticket no encontrado' });
+    }
+
+    db.prepare('DELETE FROM tickets WHERE id = ?').run(id);
+
+    res.json({ message: 'Ticket eliminado exitosamente' });
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo impecable en el puerto ${PORT}`);
 });
