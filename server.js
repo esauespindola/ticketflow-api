@@ -92,6 +92,17 @@ app.delete('/api/tickets/:id', (req, res) => {
     res.json({ message: 'Ticket eliminado exitosamente' });
 });
 
+// Manejo de rutas no encontradas (404)
+app.use((req, res) => {
+    res.status(404).json({ error: `Ruta ${req.method} ${req.url} no encontrada` });
+});
+
+// Manejo de errores generales (500)
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Error interno del servidor', detalle: err.message });
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo impecable en el puerto ${PORT}`);
 });
