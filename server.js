@@ -17,3 +17,18 @@ app.get('/api/ping', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor corriendo impecable en el puerto ${PORT}`);
 });
+
+app.post('/api/tickets', (req, res) =>{
+    const { descricion, prioridad } = req.body;
+
+    // Validar los datos de entrada
+    if (!descripcion || !prioridad) {
+        return res.status(400).json ({ error: 'Descripcion y prioridad son requeridos'});
+    }
+
+    const stmt = db.prepare(`INSERT INTO tickets (descricion, prioridad) VALUES (?,?)`);
+
+    const resultado = stmt.run(descripcion, prioridad);
+
+    res.status(201).json({ message: 'Ticket creado exitosamente', ticketId: resultado.LastInsertRowid});
+})
